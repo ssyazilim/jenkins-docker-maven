@@ -3,7 +3,7 @@ version: '3'
 services:
   jenkins:
     container_name: "jenkins"
-    image: "jenkins-docker"
+    image: "jenkins/docker"
     build:
       context: "./pipeline"
     ports:

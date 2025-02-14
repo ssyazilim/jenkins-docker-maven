@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   jenkins:
     container_name: "jenkins"
@@ -15,12 +13,27 @@ services:
       - "net"
 
   remote_host:
-    image: "remote-host"
     container_name: "remote-host"
+    image: "remote-host"
     build:
       context: "./ubuntu"
     volumes:
       - "$PWD/aws-s3.sh:/tmp/script.sh"
+    networks:
+      - "net"
+
+  git:
+    image: "gitlab/gitlab-ce:latest"
+    container_name: "git-server"
+    hostname: "gitlab.local.com"
+    restart: "always"
+    ports:
+      - "8090:80"
+    volumes:
+      - "$GITLAB_HOME/config:/etc/gitlab"
+      - "$GITLAB_HOME/logs:/var/log/gitlab"
+      - "$GITLAB_HOME/data:/var/opt/gitlab"
+    shm_size: "256m"
     networks:
       - "net"
 
